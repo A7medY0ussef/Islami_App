@@ -9,7 +9,10 @@ class SebhaScreen extends StatefulWidget {
 }
 
 class _SebhaScreenState extends State<SebhaScreen> {
-  int counter = 33;
+  List<String> Azkar = ['سبحان الله', 'الحمد لله', 'الله أكبر'];
+  int counter = 0;
+  int currentIndex = 0;
+  double rotation = 0.0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,17 +56,26 @@ class _SebhaScreenState extends State<SebhaScreen> {
                   GestureDetector(
                     onTap: () {
                       setState(() {
-                        counter--;
+                        counter++;
+                        rotation += 0.03;
+                        if (counter == 33) {
+                          counter = 0;
+                          currentIndex = (currentIndex + 1) % Azkar.length;
+                        }
                       });
                     },
                     child: Stack(
                       clipBehavior: Clip.none,
                       alignment: Alignment.topCenter,
                       children: [
-                        Image.asset(
-                          'assets/images/SebhaBody 1.png',
-                          width: 379,
-                          height: 381,
+                        AnimatedRotation(
+                          turns: rotation,
+                          duration: const Duration(milliseconds: 300),
+                          child: Image.asset(
+                            'assets/images/SebhaBody 1.png',
+                            width: 379,
+                            height: 381,
+                          ),
                         ),
 
                         Positioned(
@@ -77,7 +89,7 @@ class _SebhaScreenState extends State<SebhaScreen> {
                         Positioned(
                           top: 134,
                           child: Text(
-                            'سبحان الله',
+                            Azkar[currentIndex],
                             style: TextStyle(
                               fontSize: 36,
                               fontWeight: .w700,

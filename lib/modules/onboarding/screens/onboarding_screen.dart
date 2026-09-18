@@ -106,7 +106,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       }
                     },
                     child: Text(
-                      'Next',
+                      currentIndex == onBoardingData.length - 1 ? 'Finish' : 'Next',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: .w700,
