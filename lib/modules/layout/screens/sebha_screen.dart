@@ -9,9 +9,9 @@ class SebhaScreen extends StatefulWidget {
 }
 
 class _SebhaScreenState extends State<SebhaScreen> {
-  List<String> Azkar = ['سبحان الله', 'الحمد لله', 'الله أكبر'];
+  List<String> azkar = ['سبحان الله', 'الحمد لله', 'الله أكبر'];
   int counter = 0;
-  int currentIndex = 0;
+  final PageController _pageController = PageController();
   double rotation = 0.0;
   @override
   Widget build(BuildContext context) {
@@ -59,8 +59,20 @@ class _SebhaScreenState extends State<SebhaScreen> {
                         counter++;
                         rotation += 0.03;
                         if (counter == 33) {
-                          counter = 0;
-                          currentIndex = (currentIndex + 1) % Azkar.length;
+                          Future.delayed(const Duration(milliseconds: 100), () {
+                            setState(() {
+                              counter = 0;
+
+                              if (_pageController.page == azkar.length - 1) {
+                                _pageController.jumpToPage(0);
+                              } else {
+                                _pageController.nextPage(
+                                  duration: const Duration(milliseconds: 200),
+                                  curve: Curves.easeIn,
+                                );
+                              }
+                            });
+                          });
                         }
                       });
                     },
@@ -88,12 +100,24 @@ class _SebhaScreenState extends State<SebhaScreen> {
                         ),
                         Positioned(
                           top: 134,
-                          child: Text(
-                            Azkar[currentIndex],
-                            style: TextStyle(
-                              fontSize: 36,
-                              fontWeight: .w700,
-                              color: AppColors.white,
+                          child: SizedBox(
+                            width: 200,
+                            height: 60,
+                            child: PageView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              controller: _pageController,
+                              itemCount: azkar.length,
+                              itemBuilder: (context, index) {
+                                return Text(
+                                  azkar[index],
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 36,
+                                    fontWeight: .w700,
+                                    color: AppColors.white,
+                                  ),
+                                );
+                              },
                             ),
                           ),
                         ),
